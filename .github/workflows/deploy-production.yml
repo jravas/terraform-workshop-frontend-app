@@ -1,0 +1,27 @@
+name: "Deploy: Production"
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  retag:
+    uses: ./.github/workflows/retag.yml
+    secrets: inherit
+    with:
+      target: terraform-workshop-frontend-app
+      old-tag: development
+      new-tag: production
+
+  deploy:
+    if: github.event.pull_request.merged
+    needs: retag
+    uses: ./.github/workflows/deploy-application.yml
+    secrets: inherit
+    with:
+      target: terraform-workshop-frontend-app
+      environment: production
+      container-name: production-frontend-container
+      service-name: production-frontend-service
+      cluster-name: production-cluster
+      task-definition-family: production-frontend-task
