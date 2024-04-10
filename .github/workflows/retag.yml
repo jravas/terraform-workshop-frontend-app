@@ -19,7 +19,7 @@ on:
         required: true
         type: choice
         options:
-          - terraform-workshop-frontend-app
+          - terraform-workshop-ecs-frontend
   workflow_call:
     inputs:
       new-tag:

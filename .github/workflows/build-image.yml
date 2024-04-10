@@ -5,10 +5,10 @@ on:
       target:
         description: "Target image to build"
         required: true
-        default: terraform-workshop-frontend-app
+        default: terraform-workshop-ecs-frontend
         type: choice
         options:
-          - terraform-workshop-frontend-app
+          - terraform-workshop-ecs-frontend
   workflow_call:
     inputs:
       target:
