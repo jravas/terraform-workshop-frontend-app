@@ -1,0 +1,29 @@
+name: "Deploy: Development"
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+jobs:
+  retag:
+    if: github.event.pull_request.merged
+    uses: ./.github/workflows/retag.yml
+    secrets: inherit
+    with:
+      target: terraform-workshop-ecs-frontend
+      old-tag: "pr-${{ github.event.number }}"
+      new-tag: development
+
+  deploy:
+    if: github.event.pull_request.merged
+    needs: retag
+    uses: ./.github/workflows/deploy-application.yml
+    secrets: inherit
+    with:
+      target: terraform-workshop-ecs-frontend
+      environment: development
+      container-name: development-frontend-container
+      service-name: development-frontend-service
+      cluster-name: development-cluster
+      task-definition-family: development-frontend-task
